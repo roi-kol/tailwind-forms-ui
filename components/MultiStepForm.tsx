@@ -1,8 +1,7 @@
 "use client";
 
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-// import { useRouter } from "next/navigation";
 import ButtonForm from "./Form/Fields/ButtonForm";
 import DropdownForm from "./Form/Fields/DropdownForm";
 import RadioGroupForm from "./Form/Fields/RadioGroupForm";
@@ -10,7 +9,7 @@ import CheckboxGroupForm from "./Form/Fields/CheckboxGroupForm";
 import TextAreaForm from "./Form/Fields/TextAreaForm";
 import InputForm from "./Form/Fields/InputForm";
 import FileUploadForm from "./Form/Fields/FileUploadForm";
-import AutocompleteForm from './Form/Fields/AutocompleteForm';
+import AutocompleteForm from "./Form/Fields/AutocompleteForm";
 interface FormInputs {
   benefit: string;
   employmentStatus: string;
@@ -40,8 +39,6 @@ const MultiStepForm = () => {
     attachments: undefined,
     profession: "",
   });
-  // const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -60,7 +57,7 @@ const MultiStepForm = () => {
       comments: "",
       multipleOptions: [],
       attachments: undefined,
-      profession: "", 
+      profession: "",
     },
   });
 
@@ -98,10 +95,10 @@ const MultiStepForm = () => {
 
   const handleNext = async () => {
     const fieldsToValidate: (keyof FormInputs)[] = getFieldsToValidate(step);
-    console.log('Validating fields:', fieldsToValidate);
+    console.log("Validating fields:", fieldsToValidate);
     const isStepValid = await trigger(fieldsToValidate);
-    console.log('Step validation result:', isStepValid);
-  
+    console.log("Step validation result:", isStepValid);
+
     if (isStepValid) {
       setStep((prev) => prev + 1);
     }
@@ -118,9 +115,9 @@ const MultiStepForm = () => {
       case 3:
         return ["name", "email", "target"];
       case 4:
-        return [ "attachments"];
-        case 5:
-     return ["profession"]; 
+        return ["attachments"];
+      case 5:
+        return ["profession"];
       default:
         return [];
     }
@@ -149,8 +146,9 @@ const MultiStepForm = () => {
   };
 
   const handleGoToMySpace = () => {
-    window.location.href = "/";
-    // router.push("/myspace");
+    // Redirect to user's personal space
+    console.log("Redirecting to user's personal space..."); 
+    
   };
 
   return (
@@ -175,7 +173,7 @@ const MultiStepForm = () => {
                     {...register("benefit", { required: "נא לבחור הטבה" })}
                     onChange={(e) => setValue("benefit", e.target.value)}
                     required
-                    // TODO        error={errors.benefit?.message}
+                    error={errors.benefit?.message}
                   />
                 </div>
               )}
@@ -186,8 +184,7 @@ const MultiStepForm = () => {
                     שלב 2: מצב תעסוקה
                   </h3>
                   <RadioGroupForm
-                    title="הטבה"
-                    subtitle="שלב 2: מצב תעסוקה"
+                    label="מצב תעסוקה"
                     options={options2}
                     value={watch("employmentStatus")}
                     {...register("employmentStatus", {
@@ -197,19 +194,14 @@ const MultiStepForm = () => {
                       setValue("employmentStatus", e.target.value)
                     }
                     name="employment-status"
+                    error={errors.employmentStatus?.message}
                   />
-                  {errors.employmentStatus && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.employmentStatus.message}
-                    </p>
-                  )}
                 </div>
               )}
 
               {step === 3 && (
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">
-                    שלב 3: פרטים                  </h3>
+                  <h3 className="text-lg font-semibold mb-4">שלב 3: פרטים </h3>
 
                   <div className="space-y-4">
                     <InputForm
@@ -219,16 +211,12 @@ const MultiStepForm = () => {
                       {...register("name", {
                         required: "שדה חובה",
                         pattern: {
-                          // value: /^[a-zA-Z\s]+$/,
                           value: /^[\p{L}\s]+$/u, // Updated regex to include all letters and spaces
                           message: "נא להזין שם תקין",
                         },
                       })}
                       onChange={(e) => setValue("name", e.target.value)}
                       required
-                      // regex={/^[a-zA-Z\s]+$/}
-                      regex={/^[\p{L}\s]+$/u}
-                      errorMessage="נא להזין שם תקין"
                       error={errors.name?.message}
                     />
 
@@ -267,36 +255,27 @@ const MultiStepForm = () => {
                       onChange={(e) => setValue("comments", e.target.value)}
                       maxLength={500}
                     />
-
                   </div>
                 </div>
               )}
- {step === 4 && (
+              {step === 4 && (
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">שלב 4: פרטי ההטבה ומסמכים
+                  <h3 className="text-lg font-semibold mb-4">
+                    שלב 4: פרטי ההטבה ומסמכים
                   </h3>
                   <div className="space-y-4">
-                  {/* <CheckboxGroupForm
+                    <CheckboxGroupForm
                       title="שם ההטבה:"
                       options={options3}
                       selectedValues={selectedOptions}
                       onChange={(values) => {
                         setSelectedOptions(values);
-                        setValue("multipleOptions", values);
+                        setValue("multipleOptions", values, {
+                          shouldValidate: true,
+                        });
                       }}
-                    /> */}
-                    <CheckboxGroupForm
-      title="שם ההטבה:"
-      options={options3}
-      selectedValues={selectedOptions}
-      onChange={(values) => {
-        setSelectedOptions(values);
-        setValue("multipleOptions", values, { 
-          shouldValidate: true 
-        });
-      }}
-    />
-                     <FileUploadForm
+                    />
+                    <FileUploadForm
                       label="צירוף קבצים"
                       required
                       multiple
@@ -327,36 +306,39 @@ const MultiStepForm = () => {
                           },
                         },
                       })}
-                      onChange={(e) => setValue("attachments", e.target.files ?? undefined)}
+                      onChange={(e) =>
+                        setValue("attachments", e.target.files ?? undefined)
+                      }
                     />
-                     </div>
+                  </div>
                 </div>
               )}
-               {step === 5 && (
-    <div>
-      <h3 className="text-lg font-semibold mb-4">
-        שלב 5: פרטי מקצוע
-      </h3>
-      <AutocompleteForm
-      options={professionOptions}
-      label="תחום מקצועי"
-      placeholder="בחר את תחום המקצוע שלך"
-      value={watch("profession")}
-      {...register("profession", { required: "נא לבחור תחום מקצועי" })}
-      onChange={(value) => setValue("profession", value)}
-      required
-      error={errors.profession?.message}
-    />
-        {/* <pre className="bg-gray-100 p-4 rounded mt-4">
+              {step === 5 && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">
+                    שלב 5: פרטי מקצוע
+                  </h3>
+                  <AutocompleteForm
+                    options={professionOptions}
+                    label="תחום מקצועי"
+                    placeholder="בחר את תחום המקצוע שלך"
+                    value={watch("profession")}
+                    {...register("profession", {
+                      required: "נא לבחור תחום מקצועי",
+                    })}
+                    onChange={(value) => setValue("profession", value)}
+                    required
+                    error={errors.profession?.message}
+                  />
+                  {/* <pre className="bg-gray-100 p-4 rounded mt-4">
                     {JSON.stringify(formDataTemp, null, 2)}
                   </pre> */}
-    </div>
-     )}
-             
-              
+                </div>
+              )}
+
               <div className="flex justify-between mt-6">
                 {step > 1 && (
-                  <ButtonForm variant="outline" onClick={handleBack} >
+                  <ButtonForm variant="outline" onClick={handleBack}>
                     הקודם
                   </ButtonForm>
                 )}

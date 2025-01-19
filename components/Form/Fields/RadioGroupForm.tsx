@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, HTMLAttributes } from 'react';
+import React, { ChangeEventHandler, HTMLAttributes } from "react";
 
 interface RadioOption {
   value: string;
@@ -6,42 +6,40 @@ interface RadioOption {
 }
 
 interface RadioGroupProps<T> extends HTMLAttributes<T> {
-  title?: string;
-  subtitle?: string;
+  label?: string;
   options: RadioOption[];
   value?: string;
-  // onChange?: (value: string) => void;
   onChange?: ChangeEventHandler<T> | undefined;
   name: string;
+  error?: string;
+  required?: boolean;
 }
 
 const RadioGroupForm = ({
-  title,
-  subtitle,
+  label,
   options,
   value,
   onChange,
   name,
+  error,
+  required = true,
 }: RadioGroupProps<HTMLInputElement>) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
-      {title && (
-        <h2 className="text-xl font-medium text-right mb-2">
-          {title}
-        </h2>
-      )}
-      {subtitle && (
-        <h3 className="text-lg text-right mb-4">
-          {subtitle}
-        </h3>
-      )}
+      {/* {title && (
+        <h4 className="text-xl font-medium text-right mb-2">{title}</h4>
+      )} */}
+      {/* {subtitle && <h3 className="text-lg text-right mb-4">{subtitle}</h3>} */}
       <div className="space-y-3">
+        <label className="block text-right text-gray-700">
+          {label}
+          {required && <span className="text-red-500 mr-1">*</span>}
+        </label>
         {options.map((option) => (
           <label
             key={option.value}
             className="flex items-center  cursor-pointer group"
           >
-           
             <div className="relative">
               <input
                 type="radio"
@@ -58,31 +56,10 @@ const RadioGroupForm = ({
           </label>
         ))}
       </div>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };
 
-// // Usage example component
-// const ExampleRadioGroup = () => {
-//   const [selectedValue, setSelectedValue] = React.useState('');
-
-//   const options = [
-//     { value: 'employed', label: 'מועסק' },
-//     { value: 'unemployed', label: 'ללא תעסוקה' },
-//   ];
-
-//   return (
-//     <div className="rtl" dir="rtl">
-//       <RadioGroup
-//         title="הטבה"
-//         subtitle="שלב 2: מצב תעסוקה"
-//         options={options}
-//         value={selectedValue}
-//         onChange={setSelectedValue}
-//         name="employment-status"
-//       />
-//     </div>
-//   );
-// };
 
 export default RadioGroupForm;

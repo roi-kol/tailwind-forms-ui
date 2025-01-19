@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, HTMLAttributes, useState } from 'react';
+import React, { ChangeEventHandler, HTMLAttributes,  } from 'react';
 
 interface InputProps<T> extends HTMLAttributes<T> {
   value?: string;
@@ -12,8 +12,6 @@ interface InputProps<T> extends HTMLAttributes<T> {
   name?: string;
   maxLength?: number;
   disabled?: boolean;
-  regex?: RegExp;
-  errorMessage?: string;
 }
 
 const InputForm = ({
@@ -28,21 +26,10 @@ const InputForm = ({
   name,
   maxLength,
   disabled = false,
-  regex,
-  errorMessage = "שדה לא תקין",
 }: InputProps<HTMLInputElement>) => {
 
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    if (required && !newValue) {
-      setErrorMsg("שדה חובה"); }
-    else if (regex && !regex.test(newValue)) {
-      setErrorMsg(errorMessage);
-    } else {
-      setErrorMsg(null);
-    }
     onChange && onChange(e);
   };
 
@@ -81,7 +68,7 @@ const InputForm = ({
             disabled:bg-gray-100
             disabled:cursor-not-allowed
             ${error ? 'border-red-500' : ''}
-            ${errorMsg ? 'border-red-500' : ''}
+         
             ${className}
           `}
         />
@@ -94,20 +81,8 @@ const InputForm = ({
       {error && (
         <p className="mt-1 text-right text-sm text-red-500">{error}</p>
       )}
-      {errorMsg && (
-        <p className="mt-1 text-right text-sm text-red-500">{errorMsg}</p>
-      )}
     </div>
   );
 };
-
-// // Usage example component
-//  <InputForm
-//                     label="שם מלא"
-//                     placeholder="הכנס שם מלא"
-//                     value={formData.name}
-//                     onChange={(e) => handleInputChange("name", e.target.value)}
-//                     required
-//                   />
 
 export default InputForm;

@@ -12,6 +12,7 @@ interface DropdownProps<T> extends HTMLAttributes<T> {
   className?: string;
   name?: string;
   required?: boolean;
+  error?: string;
 }
 
 const DropdownForm = ({
@@ -23,6 +24,7 @@ const DropdownForm = ({
   name,
   required = false,
   label,
+  error,
 }: DropdownProps<HTMLSelectElement>) => {
   return (
     <div className="w-full">
@@ -82,6 +84,9 @@ const DropdownForm = ({
         </svg>
       </div>
     </div>
+    {error && (
+        <p className="mt-1 text-right text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 };

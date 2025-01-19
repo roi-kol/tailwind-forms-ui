@@ -16,22 +16,42 @@ This project is a React application that demonstrates how to create and manage f
     ```sh
     git clone https://github.com/roi-kol/tailwind-forms-ui.git
     ```
-2. Navigate to the project directory:
+2. Install the package in your project directory with:
+
     ```sh
-    cd tailwind-forms
-    ```
-3. Install dependencies:
-    ```sh
-    npm install
+    npm install tailwind-forms-ui
+
     ```
 
-## Usage
+## Examples
 
-1. Start the development server:
-    ```sh
-    npm start
-    ```
-2. Open your browser and navigate to `http://localhost:3000` to see the application in action.
+```typescript
+"use client";
+
+import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import {ButtonForm} from "tailwind-forms-ui";
+import{ DropdownForm }from "tailwind-forms-ui";
+import{ RadioGroupForm} from "tailwind-forms-ui";
+import{ CheckboxGroupForm }from "tailwind-forms-ui";
+import {TextAreaForm} from "tailwind-forms-ui";
+import {InputForm }from "tailwind-forms-ui";
+import {FileUploadForm} from "tailwind-forms-ui";
+import {AutocompleteForm }from "tailwind-forms-ui";
+...
+ <DropdownForm
+                    options={options}
+                    label="text"
+                    placeholder="choose"
+                    value={watch("myoptions")}
+                    {...register("myoptions", { required: "This field is required" })}
+                    onChange={(e) => setValue("benefit", e.target.value)}
+                    required
+                    error={errors.benefit?.message}
+                  />
+                </div>
+
 
 ## Contributing
 
@@ -39,4 +59,4 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the ISC License. See the [LICENSE](LICENSE.txt) file for details.

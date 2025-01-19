@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "esnext",
+      "lib": ["dom", "esnext"],
+      "jsx": "react",
+      "declaration": true,
+      "declarationDir": "dist",
+      "outDir": "dist",
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "strict": true
+    },
+    "include": ["components"],
+    "exclude": ["node_modules", "dist"]
+  }

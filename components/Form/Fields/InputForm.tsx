@@ -1,11 +1,11 @@
-import React, { ChangeEventHandler, HTMLAttributes,  } from 'react';
+import React, { ChangeEventHandler, HTMLAttributes } from "react";
 
 interface InputProps<T> extends HTMLAttributes<T> {
   value?: string;
   onChange?: ChangeEventHandler<T> | undefined;
   label?: string;
   placeholder?: string;
-  type?: 'text' | 'email' | 'tel' | 'password';
+  type?: "text" | "email" | "tel" | "password";
   required?: boolean;
   error?: string;
   className?: string;
@@ -19,16 +19,14 @@ const InputForm = ({
   onChange,
   label,
   placeholder,
-  type = 'text',
+  type = "text",
   required = false,
   error,
-  className = '',
+  className = "",
   name,
   maxLength,
   disabled = false,
 }: InputProps<HTMLInputElement>) => {
-
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange && onChange(e);
   };
@@ -45,6 +43,7 @@ const InputForm = ({
       )}
       <div className="relative">
         <input
+          aria-label={label}
           type={type}
           value={value}
           onChange={(e) => handleChange && handleChange(e)}
@@ -67,7 +66,7 @@ const InputForm = ({
             focus:border-transparent
             disabled:bg-gray-100
             disabled:cursor-not-allowed
-            ${error ? 'border-red-500' : ''}
+            ${error ? "border-red-500" : ""}
          
             ${className}
           `}
@@ -78,9 +77,7 @@ const InputForm = ({
           </div>
         )}
       </div>
-      {error && (
-        <p className="mt-1 text-right text-sm text-red-500">{error}</p>
-      )}
+      {error && <p className="mt-1 text-right text-sm text-red-500">{error}</p>}
     </div>
   );
 };

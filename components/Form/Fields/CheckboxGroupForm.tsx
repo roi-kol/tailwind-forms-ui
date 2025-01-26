@@ -34,28 +34,30 @@ const CheckboxGroupForm: React.FC<CheckboxGroupFormProps> = ({
   };
 
   return (
-    <div className="w-full mb-4">
+    <fieldset className="w-full mb-4">
       {title && (
-        <div className="flex justify-between items-center mb-2">
+        <legend className="flex justify-between items-center mb-2">
           <label className="block text-right text-gray-700">
             {title}
             {required && <span className="text-red-500 mr-1">*</span>}
           </label>
-        </div>
+        </legend>
       )}
       <div className="space-y-2">
         {options.map((option) => (
           <div key={option.id} className="flex items-center space-x-2">
             <input
+          
               type="checkbox"
               name={name}
               value={option.value}
               checked={selectedValues.includes(option.value)}
               onChange={() => handleCheckboxChange(option.value)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 m-2 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               {...props}
+              id={`checkbox-${option.id}`}
             />
-            <label className="text-gray-700 mr-2">{option.label}</label>
+            <label htmlFor={`checkbox-${option.id}`} className="text-gray-700 mr-2">{option.label}</label>
             
           </div>
         ))}
@@ -63,7 +65,7 @@ const CheckboxGroupForm: React.FC<CheckboxGroupFormProps> = ({
       {error && (
         <p className="mt-1 text-right text-sm text-red-500">{error}</p>
       )}
-    </div>
+    </fieldset>
   );
 };
 

@@ -9,6 +9,7 @@ This project is a React application that demonstrates how to create and manage f
 - Validation and error handling
 - Custom input components
 - Integration with Tailwind CSS
+- Accessibility fields
 
 ## Installation
 

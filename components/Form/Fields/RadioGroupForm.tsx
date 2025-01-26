@@ -26,22 +26,19 @@ const RadioGroupForm = ({
 }: RadioGroupProps<HTMLInputElement>) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
-      {/* {title && (
-        <h4 className="text-xl font-medium text-right mb-2">{title}</h4>
-      )} */}
-      {/* {subtitle && <h3 className="text-lg text-right mb-4">{subtitle}</h3>} */}
-      <div className="space-y-3">
-        <label className="block text-right text-gray-700">
+      <fieldset className="space-y-3">
+        <legend className="block text-right text-gray-700">
           {label}
           {required && <span className="text-red-500 mr-1">*</span>}
-        </label>
+        </legend>
         {options.map((option) => (
-          <label
+          <div
             key={option.value}
             className="flex items-center  cursor-pointer group"
           >
             <div className="relative">
               <input
+              id={`radio-${option.value}`}
                 type="radio"
                 name={name}
                 value={option.value}
@@ -52,14 +49,13 @@ const RadioGroupForm = ({
                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               />
             </div>
-            <span className="mr-2 text-gray-700">{option.label}</span>
-          </label>
+            <label htmlFor={`radio-${option.value}`} className="mr-2 text-gray-700">{option.label}</label>
+          </div>
         ))}
-      </div>
+      </fieldset>
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };
-
 
 export default RadioGroupForm;

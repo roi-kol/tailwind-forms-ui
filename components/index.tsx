@@ -9,7 +9,7 @@ import CheckboxGroupForm from "./Form/Fields/CheckboxGroupForm";
 import TextAreaForm from "./Form/Fields/TextAreaForm";
 import InputForm from "./Form/Fields/InputForm";
 import FileUploadForm from "./Form/Fields/FileUploadForm";
-
+import DatePickerForm from "./Form/Fields/DatePickerForm";
 // import './styles.css'; // If you have any global styles
 
 // Exporting the component so it can be used in other projects
@@ -21,6 +21,6 @@ export { CheckboxGroupForm };
 export { TextAreaForm };
 export { InputForm };
 export { FileUploadForm };
-
+export { DatePickerForm };
 // Optionally, you can also export other components or utilities
 // export { AnotherComponent } from './components/AnotherComponent';

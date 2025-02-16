@@ -1,6 +1,6 @@
 {
   "name": "tailwind-forms-ui",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "This is a forms fields using tailwind css for react projects",
   "main": "dist/index.js",
   "scripts": {

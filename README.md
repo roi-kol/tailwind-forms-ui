@@ -23,6 +23,17 @@ This project is a React application that demonstrates how to create and manage f
     npm install tailwind-forms-ui
 
     ```
+3. The fields:
+    AutocompleteForm
+    ButtonForm
+    CheckboxGroupForm
+    DatePickerForm
+    DropdownForm
+    FileUploadForm
+    InputForm
+    RadioGroupForm
+    TextAreaForm
+
 
 ## Examples
 

@@ -3,12 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 interface Option {
   value: string;
   label: string;
+  id: number;
 }
 
 interface AutocompleteProps {
   options: Option[];
-  value?: string;
-  onChange: (value: string) => void;
+  value?: number;
+  onChange: (value: number) => void;
   label?: string;
   placeholder?: string;
   required?: boolean;
@@ -21,26 +22,42 @@ const AutocompleteForm = ({
   value,
   onChange,
   label,
-  placeholder = '',
+  placeholder = ' ...',
   required = false,
   error,
   className = '',
 }: AutocompleteProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
-  const [inputValue, setInputValue] = useState(value || '');
+  const [inputValue, setInputValue] = useState('');
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Set initial input value based on selected option or placeholder
+  useEffect(() => {
+    if (value) {
+      const selectedOption = options.find(opt => opt.id === value);
+      if (selectedOption) {
+        setInputValue(selectedOption.label);
+      }
+    } else {
+      setInputValue('');  // Reset to empty when no value is selected
+    }
+  }, [value, options]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        // If no value is selected, reset to placeholder view
+        if (!value) {
+          setInputValue('');
+        }
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [value]);
 
   useEffect(() => {
     const filtered = options.filter(option =>
@@ -56,8 +73,16 @@ const AutocompleteForm = ({
 
   const handleOptionClick = (option: Option) => {
     setInputValue(option.label);
-    onChange(option.value);
+    onChange(option.id);
     setIsOpen(false);
+  };
+
+  const handleInputFocus = () => {
+    setIsOpen(true);
+    // Clear input value when focusing if no option is selected
+    if (!value) {
+      setInputValue('');
+    }
   };
 
   return (
@@ -75,7 +100,7 @@ const AutocompleteForm = ({
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          onFocus={() => setIsOpen(true)}
+          onFocus={handleInputFocus}
           placeholder={placeholder}
           className={`
             w-full
@@ -98,7 +123,7 @@ const AutocompleteForm = ({
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
             {filteredOptions.map((option) => (
               <div
-                key={option.value}
+                key={option.id}
                 onClick={() => handleOptionClick(option)}
                 className="px-4 py-2 text-right hover:bg-gray-100 cursor-pointer"
               >

@@ -60,10 +60,16 @@ const AutocompleteForm = ({
   }, [value]);
 
   useEffect(() => {
-    const filtered = options.filter(option =>
-      option.label.toLowerCase().includes(inputValue.toLowerCase())
-    );
-    setFilteredOptions(filtered);
+    try {
+      const filtered = options.filter(option =>
+        option.label.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    } catch (error) {
+      console.log('Error filtering options:', error);
+      setFilteredOptions([]);
+    }
+    
   }, [inputValue, options]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

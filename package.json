@@ -1,10 +1,10 @@
 {
   "name": "tailwind-forms-ui",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "This is a forms fields using tailwind css for react projects",
   "main": "dist/index.js",
   "scripts": {
-    "build": "echo 'Starting build...' && rollup -c --debug && echo 'Build complete'",
+    "build": "echo 'Starting build...' && rollup -c && echo 'Build complete'",
     "prepare": "npm run build",
     "test": "echo \"No tests specified\" && exit 0"
   },
@@ -35,20 +35,22 @@
     "react-hook-form": "^7.54.2",
     "react-icons": "^5.4.0",
     "tailwindcss": "^3.4.1",
-    "tsup": "^2.0.3",
+  
     "typescript": "^5"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/react": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
-    "eslint": "^9.18.0",
-    "rollup": "^2.75.0",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "tslib": "^2.8.1"
+    "rollup": "^4.18.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4"
+
+   
+ 
+  
   },
   "files": [
     "LICENSE",

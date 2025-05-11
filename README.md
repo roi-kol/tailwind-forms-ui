@@ -257,6 +257,57 @@ const ContactForm = () => {
 export default ContactForm;
 
 ```
+another example for autocomlete field
+
+```typescript
+
+<div className="city">
+                    <AutocompleteForm
+                      options={
+                        [{
+                          value:"tel aviv",
+                          label:"תל אביב",
+                          id:1
+                        },
+                        {
+                          value:"jerusalem",
+                          label:"ירושלים",
+                          id:2
+                        },
+                        {
+                          value:"haifa",
+                          label:"חיפה",
+                          id:3
+                        },
+                        {
+                          value:"beer sheva",
+                          label:"באר שבע",
+                          id:4
+                        },
+                        {
+                          value:"herzliya",
+                          label:"הרצליה",
+                          id:5
+                        },
+                        ]
+                      }
+                      label="עיר להעברה"
+                      placeholder="בחר את עיר ההעברה"
+                      value={watch("city_value")}
+                      {...register("city_value", {
+                        required: "נא לבחור תחום עיר",
+                      })}
+                      onChange={(value) => {
+                        setValue("city_value", value);
+                        setValue("city_value", value?.value || "");
+                      }}
+                      required
+                      error={errors.city_value?.message}
+                    />
+                  </div>
+
+```
+
 ![Form](/Screenshots/contactus%20form.png)
 
 

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
-interface Option {
+export interface Option {
   value: string;
   label: string;
   id: number;
@@ -8,8 +8,8 @@ interface Option {
 
 interface AutocompleteProps {
   options: Option[];
-  value?: number;
-  onChange: (value: number) => void;
+  value?: Option | null;
+  onChange: (value: Option) => void;
   label?: string;
   placeholder?: string;
   required?: boolean;
@@ -22,54 +22,53 @@ const AutocompleteForm = ({
   value,
   onChange,
   label,
-  placeholder = ' ...',
+  placeholder = " ...",
   required = false,
   error,
-  className = '',
+  className = "",
 }: AutocompleteProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Set initial input value based on selected option or placeholder
   useEffect(() => {
     if (value) {
-      const selectedOption = options.find(opt => opt.id === value);
-      if (selectedOption) {
-        setInputValue(selectedOption.label);
-      }
+      setInputValue(value.label);
     } else {
-      setInputValue('');  // Reset to empty when no value is selected
+      setInputValue(""); // Reset to empty when no value is selected
     }
-  }, [value, options]);
+  }, [value]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
         // If no value is selected, reset to placeholder view
         if (!value) {
-          setInputValue('');
+          setInputValue("");
         }
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [value]);
 
   useEffect(() => {
     try {
-      const filtered = options.filter(option =>
+      const filtered = options.filter((option) =>
         option.label.toLowerCase().includes(inputValue.toLowerCase())
       );
       setFilteredOptions(filtered);
     } catch (error) {
-      console.log('Error filtering options:', error);
+      console.log(error);
       setFilteredOptions([]);
     }
-    
   }, [inputValue, options]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +78,7 @@ const AutocompleteForm = ({
 
   const handleOptionClick = (option: Option) => {
     setInputValue(option.label);
-    onChange(option.id);
+    onChange(option);
     setIsOpen(false);
   };
 
@@ -87,7 +86,7 @@ const AutocompleteForm = ({
     setIsOpen(true);
     // Clear input value when focusing if no option is selected
     if (!value) {
-      setInputValue('');
+      setInputValue("");
     }
   };
 
@@ -120,11 +119,11 @@ const AutocompleteForm = ({
             focus:ring-2
             focus:ring-blue-500
             focus:border-transparent
-            ${error ? 'border-red-500' : ''}
+            ${error ? "border-red-500" : ""}
             ${className}
           `}
         />
-        
+
         {isOpen && filteredOptions.length > 0 && (
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
             {filteredOptions.map((option) => (
@@ -139,9 +138,7 @@ const AutocompleteForm = ({
           </div>
         )}
       </div>
-      {error && (
-        <p className="mt-1 text-right text-sm text-red-500">{error}</p>
-      )}
+      {error && <p className="mt-1 text-right text-sm text-red-500">{error}</p>}
     </div>
   );
 };

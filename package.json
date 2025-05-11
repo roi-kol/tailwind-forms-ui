@@ -1,6 +1,6 @@
 {
   "name": "tailwind-forms-ui",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "This is a forms fields using tailwind css for react projects",
   "main": "dist/index.js",
   "scripts": {
@@ -22,7 +22,9 @@
     "tailwindcss",
     "forms",
     "react-component",
-    "nextjs"
+    "nextjs",
+    "react-hook-form",
+    "fields"
   ],
   "peerDependencies": {
     "@types/react": "^18",
@@ -48,9 +50,6 @@
     "rollup": "^4.18.0",
     "rollup-plugin-peer-deps-external": "^2.2.4"
 
-   
- 
-  
   },
   "files": [
     "LICENSE",

@@ -1,9 +1,8 @@
-import React, { ChangeEventHandler, HTMLAttributes } from 'react';
+import React, { ChangeEventHandler, HTMLAttributes, forwardRef, useImperativeHandle, useRef } from 'react';
 
-interface TextAreaProps<T> extends HTMLAttributes<T> {
+interface TextAreaProps extends HTMLAttributes<HTMLTextAreaElement> {
   value?: string;
-//   onChange: (value: string) => void;
-  onChange?: ChangeEventHandler<T> | undefined;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement> | undefined;
   placeholder?: string;
   label?: string;
   rows?: number;
@@ -12,9 +11,10 @@ interface TextAreaProps<T> extends HTMLAttributes<T> {
   className?: string;
   name?: string;
   error?: string;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
 }
 
-const TextAreaForm = ({
+const TextAreaForm = forwardRef<HTMLTextAreaElement, TextAreaProps>(({
   value = '',
   onChange,
   placeholder,
@@ -25,8 +25,14 @@ const TextAreaForm = ({
   className = '',
   name,
   error,
-}: TextAreaProps<HTMLTextAreaElement>) => {
+  onBlur,
+  ...rest
+}, ref) => {
   const characterCount = value ? value.length : 0;
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  
+  // Forward the ref to the textarea element
+  useImperativeHandle(ref, () => textAreaRef.current as HTMLTextAreaElement);
 
   return (
     <div className="w-full">
@@ -38,8 +44,10 @@ const TextAreaForm = ({
       )}
       <div className="relative">
         <textarea
+          ref={textAreaRef}
           value={value}
-          onChange={(e) => onChange && onChange(e)}
+          onChange={onChange}
+          onBlur={onBlur}
           placeholder={placeholder}
           rows={rows}
           maxLength={maxLength}
@@ -61,6 +69,7 @@ const TextAreaForm = ({
             ${error ? 'border-red-500' : ''}
             ${className}
           `}
+          {...rest}
         />
         {maxLength && (
           <div className="absolute bottom-2 left-2 text-sm text-gray-500">
@@ -73,6 +82,9 @@ const TextAreaForm = ({
       )}
     </div>
   );
-};
+});
+
+// Assign a display name to the component
+TextAreaForm.displayName = 'TextAreaForm';
 
 export default TextAreaForm;

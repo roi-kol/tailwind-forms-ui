@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 
 export interface Option {
   value: string;
@@ -15,9 +15,11 @@ interface AutocompleteProps {
   required?: boolean;
   error?: string;
   className?: string;
+  name?: string;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
-const AutocompleteForm = ({
+const AutocompleteForm = forwardRef<HTMLInputElement, AutocompleteProps>(({
   options,
   value,
   onChange,
@@ -26,11 +28,17 @@ const AutocompleteForm = ({
   required = false,
   error,
   className = "",
-}: AutocompleteProps) => {
+  name,
+  onBlur,
+}: AutocompleteProps, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
   const [inputValue, setInputValue] = useState("");
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Forward the ref to the input element
+  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
   // Set initial input value based on selected option or placeholder
   useEffect(() => {
@@ -106,7 +114,10 @@ const AutocompleteForm = ({
           value={inputValue}
           onChange={handleInputChange}
           onFocus={handleInputFocus}
+          onBlur={onBlur}
+          name={name}
           placeholder={placeholder}
+          ref={inputRef}
           className={`
             w-full
             px-4
@@ -141,6 +152,8 @@ const AutocompleteForm = ({
       {error && <p className="mt-1 text-right text-sm text-red-500">{error}</p>}
     </div>
   );
-};
+});
+
+AutocompleteForm.displayName = "AutocompleteForm";
 
 export default AutocompleteForm;
